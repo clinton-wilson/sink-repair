@@ -1,7 +1,7 @@
-import { getRequests, fetchPlumbers, sendRequest } from "./dataAccess.js"
+import { getRequests, getPlumbers, sendRequest, saveCompletion } from "./dataAccess.js"
 import { deleteRequest } from "./dataAccess.js"
 const convertRequestToListElement = (request) => {
-    const plumbers = fetchPlumbers()
+    const plumbers = getPlumbers()
     return `<li>
             ${request.description}
             <button class="request__delete"
@@ -59,7 +59,7 @@ mainContainer.addEventListener(
                    2. plumberId
                    3. date_created
             */
-            const completion = {
+            const completions = {
                 requestId: requestId,
                 plumberId: plumberId,
                 dateCreated: Date.now()
@@ -70,7 +70,7 @@ mainContainer.addEventListener(
                 to the `completions` resource for your API. Send the
                 completion object as a parameter.
              */
-            sendRequest(completion)
+            saveCompletion(completions)
         }
     }
 )

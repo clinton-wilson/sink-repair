@@ -1,5 +1,6 @@
 const applicationState = {
-    requests: []
+    requests: [],
+    //completions: []
 }
 
 const API = "http://localhost:8088"
@@ -56,4 +57,34 @@ const mainContainer = document.querySelector("#container")
 
 export const getRequests = () => {
     return applicationState.requests.map(request => ({...request}))
+}
+
+export const getPlumbers = () => {
+    return applicationState.plumbers.map(plumber => ({...plumber}))
+}
+
+export const saveCompletion = (userServiceCompletion) => {
+    const fetchOptions = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userServiceCompletion)
+    }
+
+    return fetch(`${API}/completions`, fetchOptions)
+    .then(response => response.json())
+    .then(() => {
+        mainContainer.dispatchEvent(new CustomEvent("stateChanged"))
+    })
+}
+
+export const fetchCompletions = () => {
+    return fetch(`${API}/completions`)
+        .then(response => response.json())
+        .then(
+            (data) => {
+                applicationState.completions = data
+            }
+        )
 }
